@@ -1,0 +1,19 @@
+<!-- [10-24] -->
+<!-- 문서 객체 제거 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Remove</title>
+    <script>
+        window.onload = function(){
+            var willRemove = document.getElementById('will-remove');
+            document.body.removeChild(willRemove);
+            // willRemove.parentNode.removeChild(willRemove);
+        };   
+    </script>
+</head>
+<body>
+    <h1 id="will-remove">Header</h1>
+    <h1 id="not-remove">Header not remove</h1>
+</body>
+</html>

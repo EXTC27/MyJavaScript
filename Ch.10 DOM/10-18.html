@@ -1,0 +1,21 @@
+<!-- [10-18] -->
+<!-- 반복문 사용해보기 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index</title>
+    <script>
+        window.onload = function(){
+            var headers = document.getElementsByTagName('h1');            
+            for(var i = 0; i < headers.length; i++){
+                headers[i].innerHTML = 'with getElementsByTagName()';
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <h1>Header</h1>
+    <h1>Header</h1>
+</body>
+</html>

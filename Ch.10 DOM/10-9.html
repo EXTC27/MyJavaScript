@@ -1,0 +1,13 @@
+<!--setAttribute를 통한 객체 속성 지정-->
+
+<script>
+    window.onload = function(){
+        var img = document.createElement('img');
+        img.setAttribute('src', 'test.jpg');
+        img.setAttribute('width', 300);
+        img.setAttribute('height', 300);
+        img.setAttribute('data-property', 350);
+
+        document.body.appendChild(img);
+    };
+</script>

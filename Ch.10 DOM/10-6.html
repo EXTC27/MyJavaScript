@@ -1,0 +1,11 @@
+<!-- 문서 객체 연결 -->
+
+<script>
+    window.onload = function() {
+        var header = document.createElement('h1'); //요소 노드 생성
+        var textNode = document.createTextNode('Hello DOM'); //텍스트 노드 생성
+
+        header.appendChild(textNode); //객체에 노드 연결
+        document.body.appendChild(header); //body태그에 연결
+    };
+</script>

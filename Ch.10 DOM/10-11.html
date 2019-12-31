@@ -1,0 +1,18 @@
+<!--innerHTML 속성을 사용한 문서 객체 생성-->
+
+<script>
+    window.onload = function(){
+        var output = '';
+        output += '<ul>';
+        output += ' <li>JavaScript</li>';
+        output += ' <li>jQuery</li>';
+        output += ' <li>Ajax</li>';
+        output += '</ul>';
+        
+        document.body.innerHTML = output;
+
+        //innerHTML 속성에 다음과 같이 복합 대입 연산자로 문자열을 추가할 수 있다.
+        document.body.innerHTML += '<h1>Document Object Model</h1>'
+
+    };
+</script>
