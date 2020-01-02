@@ -1,0 +1,21 @@
+<!-- [10-27] -->
+<!-- 시계 -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Clock</title>
+    <script>
+        window.onload = () => {
+            var clock = document.getElementById('clock');
+
+            setInterval(() => {
+                clock.innerHTML = new Date().toString();
+            }, 1000);
+        };
+    </script>
+</head>
+<body>
+    <h1 id="clock"></h1>
+</body>
+</html>
