@@ -1,0 +1,22 @@
+<!-- [11-8] -->
+<!-- 이벤트 객체 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        window.onload = function(){
+            document.getElementById('header').onclick = function(e){
+               var event = e || window.event; //e가 undefined이면 window.event 속성을 변수 event에 넣는 조건문.
+
+               document.body.innerHTML = '';
+               for(var key in event){
+                   document.body.innerHTML += `<p> ${key} : ${event[key]} </p>`;
+               }
+            };
+        };
+    </script>
+</head>
+<body>
+    <h1 id="header">Click</h1>
+</body>
+</html>
