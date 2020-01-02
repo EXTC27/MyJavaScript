@@ -113,17 +113,17 @@
 > > >
 > > > ```html
 > > > <script>
-> > >     window.onload = function(){
-> > >         var output = '';
-> > >         output += '<ul>';
-> > >         output += ' <li>JavaScript</li>';
-> > >         output += ' <li>jQuery</li>';
-> > >         output += ' <li>Ajax</li>';
-> > >         output += '</ul>';
-> > >         
-> > >         document.body.textContent = output;
-> > >         document.body.textContent += '<h1>Document Object Model</h1>'
-> > >     };
+> > >  window.onload = function(){
+> > >      var output = '';
+> > >      output += '<ul>';
+> > >      output += ' <li>JavaScript</li>';
+> > >      output += ' <li>jQuery</li>';
+> > >      output += ' <li>Ajax</li>';
+> > >      output += '</ul>';
+> > >      
+> > >      document.body.textContent = output;
+> > >      document.body.textContent += '<h1>Document Object Model</h1>'
+> > >  };
 > > > </script>
 > > > ```
 
@@ -221,8 +221,8 @@
 
 > > >  **for in 반복문을 사용하면 안 되는 이유**
 > > >
-> > > for in 반복문을 사용하면 <u>문서 객체 이외의 속성</u>에도 접근하기 때문이다.
-> > > 따라서, 꼭 단순 for 반복문을 사용할 것.
+> > >  for in 반복문을 사용하면 <u>문서 객체 이외의 속성</u>에도 접근하기 때문이다.
+> > >  따라서, 꼭 단순 for 반복문을 사용할 것.
 
 
 
@@ -331,3 +331,208 @@ HTML5 부터는 document 객체에 새로운 메서드가 추가되었다.
 
 **일반적으로** `willRemove.parentNode.removeChild('willRemove');`**를 사용한다.**
 <u>**부모 노드로 이동하고 그 자식 노드를 제거하는 것이다.**</u>
+
+
+
+## 10.6 응용
+
+#### 10.6.1 문서 객체를 사용한 시계
+
+```html
+<!-- [10-27] -->
+<!-- 시계 -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Clock</title>
+    <script>
+        window.onload = () => {
+            var clock = document.getElementById('clock');
+
+            setInterval(() => {
+                clock.innerHTML = new Date().toString();
+            }, 1000);
+        };
+    </script>
+</head>
+<body>
+    <h1 id="clock"></h1>
+</body>
+</html>
+```
+
+
+
+#### 10.6.2 문서 객체를 사용한 움직임 구현
+
+```html
+<!-- [10-33] -->
+<!-- 태양, 지구, 달 궤도 애니메이션 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sun, Earth, Moon</title>
+    <script>
+        window.onload = () => {
+            var sun = document.getElementById('sun');
+            var earth = document.getElementById('earth');
+            var moon = document.getElementById('moon');
+
+            sun.style.position = 'absolute';
+            earth.style.position = 'absolute';
+            moon.style.position = 'absolute';
+            sun.style.left = 250 + 'px';
+            sun.style.top = 200 + 'px';
+
+            var earthAngle = 0;
+            var moonAngle = 0;
+
+            setInterval(() => {
+                var earthLeft = 250 + 150 * Math.cos(earthAngle);
+                var earthTop = 200 + 150 * Math.sin(earthAngle);
+                var moonLeft = earthLeft + 50 * Math.cos(moonAngle);
+                var moonTop = earthTop + 50 * Math.sin(moonAngle);
+
+                earth.style.left = earthLeft + 'px';
+                earth.style.top = earthTop + 'px';
+                moon.style.left = moonLeft + 'px';
+                moon.style.top = moonTop + 'px';
+
+                earthAngle += 0.1;
+                moonAngle += 0.3;
+
+            }, 1000 / 30);
+            
+        };
+    </script>
+</head>
+<body>
+    <h1 id="sun">Sun</h1>   
+    <h1 id="earth">Earth</h1>   
+    <h1 id="moon">Moon</h1>   
+</body>
+</html>
+```
+
+
+
+#### 10.6.3 문서 객체와 객체지향을 사용한 움직임 구현
+
+```html
+<!-- [10-40] -->
+<!-- 알파벳들을 랜덤으로 움직이기 -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Randomly Moving</title>
+    <script>
+        //랜덤 정수 생성
+        function nextRandomInteger(limit){
+            return Math.round(Math.random() * limit);
+        }
+
+        //랜덤 알파벳 리턴
+        var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        function randomAlphabet(){
+            return alphabet.charAt(nextRandomInteger(25));
+        }
+
+        //양수와 음수로 랜덤한 속도를 생성하는 함수
+        function randomSpeed(maxSpeed){
+            return Math.random() * maxSpeed - Math.random() * maxSpeed;
+        }
+    </script>
+
+    <!-- 생성자 -->
+    <script>
+        var canvasWidth = 700;
+        var canvasHeight = 400;
+
+        function MovingText(){
+            //위치와 속도 속성
+            this.x = nextRandomInteger(canvasWidth);
+            this.y = nextRandomInteger(canvasHeight);
+            this.vx = randomSpeed(10);
+            this.vy = randomSpeed(10);
+            
+            //문서 객체를 생성
+            
+            this.body = document.createElement('h1');
+            this.body.innerHTML = randomAlphabet();
+            this.body.style.position = 'absolute';
+
+            //문서 객체를 document.body에 추가
+            document.body.appendChild(this.body);
+        }
+
+        MovingText.prototype.move = function(){
+            //범위 검사
+            if(this.x < 0 || this.x > canvasWidth) {this.vx *= -1;}
+            if(this.y < 0 || this.y > canvasHeight) {this.vy *= -1;}
+
+            //이동
+            this.x += this.vx;
+            this.y += this.vy;
+
+            //화면에 이동 표시
+            this.body.style.left = this.x + 'px';
+            this.body.style.top = this.y + 'px';
+        };
+    </script>
+
+    <!-- window.onload -->
+    <script>
+        window.onload = function(){
+            var movingTexts = [];
+
+            //배열에 MovingText 객체 100개를 생성
+            for(var i = 0; i < 100; i++){
+                movingTexts.push(new MovingText());
+            }
+
+            //움직임
+            setInterval(() => {
+                for(var i in movingTexts){
+                    movingTexts[i].move();
+                }
+            }, 1000 / 30);
+        };
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
+```
+
+> > > **클로저 활용**
+> > >
+> > > [10-40] 에서 `randomAlphabet()`함수는 랜덤으로 알파벳을 생성하는 함수이다.
+> > >
+> > > 여러프로그램에서 응용할 수 있는 내용이므로 복사해서 사용할 때, 변수 alphabet을 재정의하면 안된다.
+> > >
+> > > 따라서 함수 내부에 변수를 만드는 것이 안전할 것이다.
+> > >
+> > > ```html
+> > > <!-- 내부 변수 사용 -->
+> > > function randomAlphabet(){
+> > > 	var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+> > > 	return alphabet.charAt(nextRandomInteger(25));
+> > > }
+> > > ```
+> > >
+> > > 좋은 방법이긴 하지만, 이 함수를 100번 사용한다면 변수 alpha가 메모리에서 100번 생성되고 100번 제거 되는 일이 발생한다.
+> > > 따라서 클로저로 외부에는 공개되지 않는 변수를 생성하는 것이 좋은 해결법이다.
+> > >
+> > > ```html
+> > > <!-- 클로저 활용 -->
+> > > var randomAlphabet = (function(){
+> > > 	var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+> > > 	return function(){
+> > > 		return alphabet.charAt(nextRandomInteger(25));
+> > > 	}
+> > > })();
+> > > ```
+
