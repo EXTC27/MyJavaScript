@@ -23,7 +23,7 @@
   - DOM Level 0
     - 인라인 이벤트 모델
     - 기본 이벤트 모델
-  - DOM Level 1
+  - DOM Level 2
     - Microsoft 인터넷 익스플로러 이벤트 모델
     - 표준 이벤트 모델
 
@@ -297,3 +297,282 @@ HTML 페이지의 가장 기본적인 이벤트 연결 방법.
 
 
 ## 11.8 이벤트 전달
+
+<u>어떤 이벤트가 먼저 발생해서 어떤 순서로 발생</u>하는 지를 **이벤트 전달**이라고 한다.
+
+```html
+<!-- [11-23] -->
+<!-- 이벤트 전달 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        * {border: 3px solid black;}
+    </style>
+    <script>
+    </script>
+</head>
+
+<body>
+    <div onclick="alert('outer-div')">
+        <div onclick="alert('inner-div')">
+            <h1 onclick="alert('header')">
+                <p onclick="alert('paragraph')">Paragraph</p>
+            </h1>
+        </div>
+    </div>
+</body>
+</html>
+```
+
+일반적으로 JS의 이벤트 전달 순서는 **이벤트 버블링** 방식에 따른다.
+**이벤트 버블링**은 <u>자식 노드에서 부모 노드 순으로 이벤트를 실행</u>하는 것을 의미한다.
+
+<u>이벤트 버블링과 반대되는 개념</u>이 **이벤트 캡쳐링**이다.
+**이벤트 캡쳐링**은 <u>부모 노드에서 자식 노드 순으로 실행</u>되는 것이다.
+
+전 세계에서 가장 점유율 높은 브라우저인 익스플로러가 캡쳐링을 지원하지 않으므로 **<u>이벤트 캡쳐링은 ~~절대~~ 사용하지 않는다.</u>**
+
+
+
+우리는 <u>이벤트 전달을 막는 방법</u>을 알아야 한다. 
+이벤트 전달을 막아서 원하는 기능만 실행되도록 하는 스킬이 필요하기 때문이다.
+
+익스플로러와 그외 브라우저가 이벤트 전달을 막는 방법은 다른다.
+
+- **인터넷 익스플로러** : 이벤트 객체의 `cancelBubble` 속성을 `true`로 변경한다.
+- **그외 브라우저** : 이벤트 객체의 `stopPropagation()` 메서드를 사용한다.
+
+```html
+<!-- [11-26] -->
+<!-- 이벤트 전달 제거 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        window.onload = function(){
+            document.getElementById('header').onclick = function(){
+                alert('header');
+            };
+
+            document.getElementById('paragraph').onclick = function(e){
+                //이벤트 객체 처리
+                var event = e || window.event;
+
+                alert('paragraph');
+
+                //이벤트 전달 제거
+                event.cancelBubble = true;
+                if(event.stopPropagation){
+                    event.stopPropagation();
+                }
+            };
+        };
+    </script>
+</head>
+<body>
+    <h1 id="header">
+        <p id="paragraph">Paragraph</p>
+    </h1>
+</body>
+</html
+```
+
+익스플로러는 이벤트 객체에 `stopPropagtion()` 메서드가 없으므로 조건문으로 에러를 방지한다.
+그외 브라우저에서는 `cancelBubble` 속성을 사용하는 것이 문제가 될 수 있지만, 속성에 값을 입력하는 것은 오류가 발생하지 않으므로 문제없다.
+
+---
+
+
+
+## 11.9 인터넷 익스플로러 이벤트 모델
+
+**고전 이벤트 모델**이나 **인라인 이벤트 모델**은 <u>한 번에 하나의 이벤트 리스너</u>만 가질 수 있다.
+이러한 DOM Level 0 이벤트 모델들의 <u>단점을 보완하려고 만들어진 이벤트 모델이 DOM Level 2 이벤트 모델</u>이다.
+
+**인터넷 익스플로러 이벤트 모델**은 다음 두 메서드로 이벤트를 연결하거나 제거할 수 있다.
+<u>**첫 번째 매개변수에 이벤트 속성**</u>을 쓴다.
+
+- attachEvent(eventProperty, eventListner);
+- detachEvent(eventProperty, eventListner);
+
+```html
+<!-- [11-28] -->
+<!-- 인터넷 익스플로러 이벤트 모델, 여러 개의 이벤트 연결 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        //윈도우가 로드될 때
+        window.attachEvent('onload', function(){
+            var header = document.getElementById('my-header');
+            
+            //이벤트 연결
+            header.attachEvent('onclick', function(){alert('클릭1');});
+            header.attachEvent('onclick', function(){alert('클릭2');});
+            header.attachEvent('onclick', function(){alert('클릭3');});
+        });
+    </script>
+</head>
+<body>
+    <h1 id="my-header">Click</h1>    
+</body>
+</html
+```
+
+인터넷 익스플로러의 이벤트 모델이므로 <u>익스플로러에서만 실행</u>된다.
+
+DOM Level 2 이벤트 모델은 <u>여러 번 이벤트를 추가</u>할 수 있다.
+[11-28]을 보면 이벤트 리스너를 세개 연결하는데, <u>세 개 모두 연결한 순서대로 동작</u>한다.
+
+
+
+이벤트를 제거할 때, <u>익명 함수</u>를 이벤트 리스너로 사용한 이벤트는 제거할 수 없다.
+어떤 이벤트 리스너를 제거할지 명확하게 알려주어야 하기 때문이다.
+
+```html
+<!-- [11-29] -->
+<!-- 인터넷 익스플로러 이벤트 모델, 이벤트 제거 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        //윈도우가 로드될 때
+        window.attachEvent('onload', function(){
+            var header = document.getElementById('my-header');
+            var handler = function(){alert('클릭');};
+            
+            //이벤트 연결
+            header.attachEvent('onclick', handler);
+            //이벤트 제거
+            header.detachEvent('onclick', handler);
+        });
+    </script>
+</head>
+<body>
+    <h1 id="my-header">Click</h1>    
+</body>
+</html
+```
+
+참고로 **인터넷 익스플로러 이벤트 모델**에서 <u>이벤트 리스너의 `this` 키워드는 이벤트 발생 객체를 의미하지 않는다. `window` 객체를 나타낸다.</u>
+이벤트 발생 객체를 사용하려면 이벤트 객체의 `srcElement` 속성을 사용해야한다.
+
+`attachEvent()` 메서드는 인터넷 익스플로러에만 있으므로 다른 브라우저에서는 에러가 난다.
+따라서 다른 브라우저일 경우 조건문으로 해당 내용을 실행하지 않게 해줘야한다.
+
+```html
+<!-- [11-30] -->
+<!-- 인터넷 익스플로러 이벤트 모델, 조건문 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        //윈도우가 로드될 때
+        window.onload = function(){
+            var header = document.getElementById('my-header');
+			//인터넷 익스플로러의 경우 실행한다.
+            if(header.attachEvent){
+                var handler = function(){
+                    window.event.srcElement.style.color = 'red';
+                    window.event.srcElement.detachEvent('onclick', handler);
+                };
+                header.attachEvent('onclick', handler);
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1 id="my-header">Click</h1>    
+</body>
+</html
+```
+
+**인터넷 익스플로러 이벤트 모델**은 그냥 이런 것도 있구나 하고 넘어가도 된다.
+
+---
+
+
+
+## 11.10 표준 이벤트 모델
+
+**표준 이벤트 모델**은 W3C에서 공식적으로 지정한 DOM Level 2 이벤트 모델이다.
+한 번에 여러 가지의 이벤트 리스너를 추가할 수 있으며, 이벤트 캡쳐링도 지원한다.
+
+> 익스플로러는 **표준 이벤트 모델**을 익스플로러9 부터 지원한다.
+
+
+
+**표준 이벤트 모델**은 다음 메서드를 사용한다.
+
+- `addEventListener(eventName, handler, useCapture)` 
+- `removeEventListner(eventName, handler)`
+
+매개 변수 `useCapture`는 입력하지 않으면 자동으로 `false`가 입력된다.
+
+```html
+<!-- [11-31] -->
+<!-- 표준 이벤트 모델, 이벤트 연결 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        window.onload = function(){
+            var header = document.getElementById('my-header');
+
+            header.addEventListener('click', function(){
+                this.innerHTML += '+';
+            });
+        };
+    </script>
+</head>
+<body>
+    <h1 id="my-header">Click</h1>
+</body>
+</html
+```
+
+**표준 이벤트 모델**은 이벤트 리스너 안에서 <u>`this` 키워드가 이벤트 발생 객체</u>를 의미한다. 
+
+
+
+```html
+<!-- [11-32] -->
+<!-- 이벤트 모델의 통합적 사용 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        window.onload = function(){
+            var header = document.getElementById('my-header');
+
+            if(header.attachEvent){
+                //익스플로러의 경우 실행
+                var handler = function(){
+                    window.event.srcElement.style.color = 'red';
+                    window.event.srcElement.detachEvent('onclick', handler);
+                };
+                header.attachEvent('onclick', handler);
+            }
+            else{
+                //그외 브라우저 실행
+                var handler = function(){
+                    this.style.color = 'red';
+                    this.removeEventListner('click', handler);
+                };
+                header.addEventListener('click', handler);
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <h1 id="my-header">Click</h1>        
+</body>
+</html
+```
+
+---
+
+
+
