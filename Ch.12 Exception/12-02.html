@@ -1,0 +1,11 @@
+<!-- [12-02] -->
+<!-- 이벤트 객체의 예외 처리 -->
+<script>
+    function whenClick(e){
+        var event = e || window.event;
+        var willAlert = '';
+        willAlert += `clientX:  + ${event.clientX} + \n`;
+        willAlert += `clientY:  + ${event.clientY} + \n`;
+        alert(willAlert);
+    };
+</script>

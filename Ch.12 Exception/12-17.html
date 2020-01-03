@@ -1,0 +1,14 @@
+<!-- [12-17] -->
+<!-- 외부 JS 파일 사용 시 주의점 -->
+<head>
+    <script>
+        alert(typeof(externalFileVariable));
+        alert(typeof(externalFileFunction));
+    </script>
+    
+    <script src="12-15.js"></script> <!-- 외부 JS 파일 추가 -->
+    <script>
+        alert(typeof(externalFileVariable));
+        alert(typeof(externalFileFunction));
+    </script>
+</head>
