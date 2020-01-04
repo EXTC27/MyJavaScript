@@ -1,0 +1,27 @@
+<!-- [13-24] -->
+<!-- 입력 양식 필터 선택자 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="jquery-3.4.1.js"></script>
+    <script>
+        $(document).ready(function(){
+            //5초 후 코드 실행
+            setTimeout(() => {
+                var value = $('select > option:selected').val();
+
+                alert(value);
+            }, 5000);
+        });
+    </script>
+</head>
+<body>
+    <select>
+        <option>Apple</option>
+        <option>Bag</option>
+        <option>Cat</option>
+        <option>Dog</option>
+        <option>Elephant</option>
+    </select>
+</body>
+</html
