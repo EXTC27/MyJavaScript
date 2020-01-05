@@ -469,3 +469,364 @@ CSS의 가장 기본적인 선택자는 **전체 선택자(*)**이다.
 
 #### 13.7.2 위치 필터 선택자
 
+| 선택자 형태 | 설명                                     |
+| ----------- | ---------------------------------------- |
+| 요소:odd    | 홀수 번째에 위치한 문서 객체를 선택한다. |
+| 요소:even   | 짝수 번째에 위치한 문서 객체를 선택한다. |
+| 요소:first  | 첫 번째에 위치한 문서 객체를 선택한다.   |
+| 요소:last   | 마지막에 위치한 문서 객체를 선택한다.    |
+
+```html
+<!-- [13-26] -->
+<!-- 위치 필터 선택자 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="jquery-3.4.1.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('tr:odd').css('background', '#f9f9f9');
+            $('tr:even').css('background', '#9f9f9f');
+            $('tr:first').css('background', '#000000').css('color', '#ffffff');
+        });
+    </script>
+</head>
+
+<body>
+    <table>
+        <tr><th>이름</th><th>혈액형</th><th>지역</th></tr>
+        <tr><td>강민수</td><td>AB형</td><td>서울특별시 송파구</td></tr>
+        <tr><td>구지연</td><td>B형</td><td>미국 캘리포니아</td></tr>
+        <tr><td>김미화</td><td>AB형</td><td>미국 메사추세츠</td></tr>
+        <tr><td>김선화</td><td>O형</td><td>서울특별시 강서구</td></tr>
+        <tr><td>남기주</td><td>A형</td><td>서울특별시 노량진구</td></tr>
+        <tr><td>윤하린</td><td>B형</td><td>서울특별시 용산구</td></tr>
+    </table>    
+</body>
+</html
+```
+
+대부분의 jQuery 메서드가 **체이닝**을 사용할 수 있다.
+
+
+
+#### 13.7.3 함수 필터 선택자
+
+jQuery는 함수 형태의 필터 선택자를 제공한다.
+
+| 선택자 형태           | 설명                                         |
+| --------------------- | -------------------------------------------- |
+| 요소:contains(문자열) | 특정 문자열을 포함하는 문서 객체를 선택한다. |
+| 요소:eq(n)            | n번째에 위치하는 문서 객체를 선택한다.       |
+| 요소:gt(n)            | n번째 초과에 위치하는 문서 객체를 선택한다.  |
+| 요소:has(h1)          | h1 태그가 있는 문서 객체를 선택한다.         |
+| 요소:lt(n)            | n번째 미만에 위치하는 문서 객체를 선택한다.  |
+| 요소:not(선택자)      | 선택자와 일치하지 않는 문서 객체를 선택한다. |
+| 요소:nth-child(3n+1)  | 3n+1번째에 위치하는 문서 객체를 선택한다.    |
+
+```html
+<!-- [13-27] -->
+<!-- 함수 필터 선택자 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="jquery-3.4.1.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('tr:eq(0)').css('background', '#000000').css('color', 'white');
+            $('td:nth-child(3n+1)').css('background', '#565656');
+            $('td:nth-child(3n+2)').css('background', '#a9a9a9');
+            $('td:nth-child(3n)').css('background', '#f9f9f9');
+        });
+    </script>
+</head>
+<body>
+    <table>
+        <tr><th>이름</th><th>혈액형</th><th>지역</th></tr>
+        <tr><td>강민수</td><td>AB형</td><td>서울특별시 송파구</td></tr>
+        <tr><td>구지연</td><td>B형</td><td>미국 캘리포니아</td></tr>
+        <tr><td>김미화</td><td>AB형</td><td>미국 메사추세츠</td></tr>
+        <tr><td>김선화</td><td>O형</td><td>서울특별시 강서구</td></tr>
+        <tr><td>남기주</td><td>A형</td><td>서울특별시 노량진구</td></tr>
+        <tr><td>윤하린</td><td>B형</td><td>서울특별시 용산구</td></tr>
+    </table>
+</body>
+</html>
+```
+
+**필터 선택자**는 **기본 선택자**에 비해 활용도가 굉장히 떨어진다. 
+따라서 **필터 선택자**는 필요할 때 찾아 쓰는 쪽을 추천한다.
+
+---
+
+
+
+## 13.8 배열 관리
+
+jQuery로 배열을 관리할 때는 `each()` 메서드를 사용한다.
+`each()` 메서드는 매개변수로 입력한 함수로 `for in` 반복문처럼 객체나 배열의 요소를 검사하는 메서드이다.
+
+`each()` 메서드는 두 가지 형태로 사용한다.
+
+- `$.each(object, function(index, item){})`
+- `$(selector).each(function(index, item){})`
+
+
+
+#### 13.8.1 JS 배열 관리
+
+JS 배열에 들어 있는 내용을 HTML 페이지에 표시해보자.
+
+```html
+<!-- [13-30] -->
+<!-- $.each() -->
+<script src="jquery-3.4.1.js"></script>
+<script>
+    $(document).ready(function(){
+        var array = [
+            {name:'Google', link:'http://google.co.kr'},
+            {name:'Naver', link:'http://naver.com'},
+            {name:'Daum', link:'http://daum.net'},
+        ];
+        $.each(array, function(index, item){
+            var output = '';
+
+            output += `<a href="${item.link}">`;
+            output += `<h1>${item.name}</h1>`;
+            output += `</a>`;
+
+            document.body.innerHTML += output;
+        });
+    });
+    
+</script>
+```
+
+Ajax를 진행할 때 `$.each()` 형태의 메서드를 많이 사용하므로 꼭 외워두자.
+
+> > > **`forEach()` 메서드와 차이점**
+> > >
+> > > 매개변수의 순서가 다르다.
+> > >
+> > > | each() 메서드                            | forEach() 메서드                             |
+> > > | ---------------------------------------- | -------------------------------------------- |
+> > > | $.each(function(**index**, **item**){}); | [].forEach(function(**item**, **index**){}); |
+
+
+
+#### 13.8.2 jQuery 배열 관리
+
+jQuery 배열 객체를 다뤄보자. 
+<u>jQuery의 배열 객체</u>는 따로 만드는 것이 아니라, <u>선택자로 여러 개의 문서 객체를 선택할 때 생성</u>된다.
+
+```html
+<!-- [13-35] -->
+<!-- $(selector).each() -->
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .high-light-0{ background: red; }
+        .high-light-1{ background: orange; }
+        .high-light-2{ background: yellow; }
+        .high-light-3{ background: green; }
+        .high-light-4{ background: blue; }
+    </style>
+    <script src="jquery-3.4.1.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('h1').each(function(index, item){
+                $(item).addClass(`high-light-${index}`); //문서 객체에 class 속성을 추가하는 메서드.
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>item - 0</h1>
+    <h1>item - 1</h1>
+    <h1>item - 2</h1>
+    <h1>item - 3</h1>
+    <h1>item - 4</h1>
+</body>
+</html>
+```
+
+`each()` 메서드로 각각의 객체에 서로 다른 클래스가 적용된다.
+
+
+
+매개변수 `item`을 사용할 수도 있지만, 일반적으로 `this` 키워드를 더 많이 사용한다.
+`each()` 메서드의 매개변수로 입력한 함수 안에서 `this` 키워드와 `item`은 의미가 같다.
+
+```html
+<!-- [13-36] -->
+<!-- each() 메서드에서의 this 키워드 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .high-light-0{ background: red; }
+        .high-light-1{ background: orange; }
+        .high-light-2{ background: yellow; }
+        .high-light-3{ background: green; }
+        .high-light-4{ background: blue; }
+    </style>
+    <script src="jquery-3.4.1.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('h1').each(function(index, item){
+                $(this).addClass(`high-light-${index}`); //item 대신 this 사용
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>item - 0</h1>
+    <h1>item - 1</h1>
+    <h1>item - 2</h1>
+    <h1>item - 3</h1>
+    <h1>item - 4</h1>
+</body>
+</html>
+```
+
+
+
+참고로 `addClass()` 메서드의 매개변수에 함수를 입력할 수 있다.
+대부분의 jQuery 메서드들은 이와 같은 특성이 있다.
+
+```html
+<script>
+	$(document).ready(function(){
+        $('h1').addClass(function(index){
+            return `high-light-${index}`;
+        });
+    });
+</script>
+```
+
+---
+
+
+
+## 13.9 객체 확장
+
+`$.extend()` 메서드는 정말 중요한 메서드지만, 내용 자체는 간단하다.
+JS로 빈 객체를 생성하고 새 속성을 추가할 때, 추가할 속성의 수가 많아지면 매우 귀찮고 코드가 지저분해진다.
+
+```html
+<script>
+	$(document).readey(function(){
+        var object = {};
+        object.name = 'RinIanTta';
+        object.gender = 'Male';
+        object.part = 'Second Guitar';
+    });
+</script>
+```
+
+
+
+이러한 문제를 해결하기위해 만들어진게 `$.extend()` 메서드이다.
+
+```html
+<!-- [13-40] -->
+<!-- $.extend() 메서드 -->
+<script src="jquery-3.4.1.js"></script>
+<script>
+    $(document).ready(function(){
+        var object = {
+            name: '윤인성'
+        };
+
+        //$.extend() 메서드 사용
+        $.extend(object, {
+           region: '서울특별시 강서구',
+           part: '세컨드 기타' 
+        });
+
+        var output = '';
+        $.each(object, function(key, item){
+            output += `${key} : ${item} \n`;
+        });
+        alert(output);
+    });
+</script>
+```
+
+---
+
+
+
+## 13.10 jQuery 충돌 방지
+
+jQuery 말고도 여러 가지 JS 프레임워크가 있다. 
+여러 플러그인을 같이 사용하면 플러그인 간의 충돌이 발생한다.
+
+충돌을 방지할 때 `$.noConflict()` 메서드를 사용한다.
+하지만, `$.noConflict()` 메서드를 사용하면 더 이상 식별자 $ 를 사용할 수 없다.
+
+```html
+<script>
+	$.noConflict();
+    jQuery(document).ready(function(){
+        
+    });
+</script>
+```
+
+
+
+간단하게 쓰고 싶다면 jQuery 객체를 다른 변수에 저장해서 사용하자.
+
+```html
+<script>
+    $.noConflict();
+    var J = jQuery;
+
+    J(document).ready(function(){
+        
+    });
+</script>
+```
+
+---
+
+
+
+## 13.11 응용
+
+#### 13.11.1 $.extend() 메서드를 사용한 옵션 객체 보완
+
+jQuery를 사용해 무언가 만들 때 옵션 객체 초기화를 굉장히 많이 사용한다.
+
+객체를 결합하는 `$.extend()` 메서드를 활용하면 간단하게 구현할 수 있다.
+객체를 결합할 때, <u>속성 이름이 같으면 값이 덮어 씌워지는 특성</u>을 이용한다.
+이를 활용하면 <u>'앞에 기본값 객체를 넣고, 뒤에 사용자 정의 객체'</u>를 넣어서 옵션 객체를 보완할 수 있다.
+
+```html
+<!-- [13-45] -->
+<!-- $.extend()를 사용한 옵션 객체 보완 -->
+<script src="jquery-3.4.1.js"></script>
+<script>
+    function test(options){
+        //옵션 객체 초기화
+        options = $.extend({
+            //기본 값
+            valueA: 10,
+            valueB: 20,
+            valueC: 30,
+        }, options); //참고로 객체 하나만 넣으면 기본 값으로 깊은복사가 되어 버린다.
+        
+        alert(`${options.valueA} : ${options.valueB} : ${options.valueC}`);
+    }
+
+    test({
+        valueA: 52,
+        valueB: 273
+    });
+</script>
+```
+
+---
+
