@@ -1,0 +1,24 @@
+<!-- [11-30] -->
+<!-- 인터넷 익스플로러 이벤트 모델, 조건문 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        //윈도우가 로드될 때
+        window.onload = function(){
+            var header = document.getElementById('my-header');
+			//인터넷 익스플로러의 경우 실행한다.
+            if(header.attachEvent){
+                var handler = function(){
+                    window.event.srcElement.style.color = 'red';
+                    window.event.srcElement.detachEvent('onclick', handler);
+                };
+                header.attachEvent('onclick', handler);
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1 id="my-header">Click</h1>    
+</body>
+</html

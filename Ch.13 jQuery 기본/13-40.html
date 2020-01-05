@@ -1,0 +1,22 @@
+<!-- [13-40] -->
+<!-- $.extend() 메서드 -->
+<script src="jquery-3.4.1.js"></script>
+<script>
+    $(document).ready(function(){
+        var object = {
+            name: '윤인성'
+        };
+
+        //$.extend() 메서드 사용
+        $.extend(object, {
+           region: '서울특별시 강서구',
+           part: '세컨드 기타' 
+        });
+
+        var output = '';
+        $.each(object, function(key, item){
+            output += `${key} : ${item} \n`;
+        });
+        alert(output);
+    });
+</script>

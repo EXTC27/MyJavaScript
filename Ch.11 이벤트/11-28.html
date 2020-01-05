@@ -1,0 +1,21 @@
+<!-- [11-28] -->
+<!-- 인터넷 익스플로러 이벤트 모델, 여러 개의 이벤트 연결 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        //윈도우가 로드될 때
+        window.attachEvent('onload', function(){
+            var header = document.getElementById('my-header');
+            
+            //이벤트 연결
+            header.attachEvent('onclick', function(){alert('클릭1');});
+            header.attachEvent('onclick', function(){alert('클릭2');});
+            header.attachEvent('onclick', function(){alert('클릭3');});
+        });
+    </script>
+</head>
+<body>
+    <h1 id="my-header">Click</h1>    
+</body>
+</html

@@ -1,0 +1,12 @@
+<!-- [12-01] -->
+<!-- 이벤트 연결의 예외 처리 -->
+<script>
+    function registerEventListener(node, event, listener){
+        if(node.addEventListener){
+            node.addEventListener(event, listener, false);
+        }
+        else if(node.attachEvent){
+            node.attachEvent('on' + evnet, listener);
+        }
+    }
+</script>
