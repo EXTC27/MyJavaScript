@@ -1,0 +1,13 @@
+<!-- [14-05] -->
+<!-- filter() 메소드의 체이닝 -->
+<script src="jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('h1').css('background', 'orange').filter(':even').css('color', 'red');
+    });
+</script>
+<body>
+    <h1>Header-0</h1>
+    <h1>Header-1</h1>
+    <h1>Header-2</h1>
+</body>

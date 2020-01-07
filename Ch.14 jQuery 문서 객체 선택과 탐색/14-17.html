@@ -1,0 +1,36 @@
+<!-- [14-17] -->
+<!-- XML 파싱 -->
+<script src="jquery-3.4.1.min.js"></script>
+<script>
+    var xml = '';
+    xml += '<friends>';
+    xml += '    <friend>';
+    xml += '        <name>연하진</name>';
+    xml += '        <language>Ruby</language>';
+    xml += '    </friend>';
+    xml += '    <friend>';
+    xml += '        <name>윤명월</name>';
+    xml += '        <language>Basic</language>';
+    xml += '    </friend>';
+    xml += '    <friend>';
+    xml += '        <name>윤하린</name>';
+    xml += '        <language>C#</language>';
+    xml += '    </friend>';
+    xml += '</friends>';
+
+    $(document).ready(function(){
+        var xmlDoc = $.parseXML(xml);
+        $(xmlDoc).find('friend').each(function(index){
+            var output = '';
+            output += '<div>';
+            output += `<h1>${$(this).find('name').text()}</h1>`;
+            output += `<p>${$(this).find('language').text()}</p>`;
+            output += '</div>';
+
+            document.body.innerHTML += output;
+        });
+    });
+</script>
+<body>
+    
+</body>

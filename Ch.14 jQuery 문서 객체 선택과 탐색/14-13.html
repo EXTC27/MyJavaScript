@@ -1,0 +1,17 @@
+<!-- [14-13] -->
+<!-- is() -->
+<script src="jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('h1').each(function(){
+            if($(this).is('.select')){
+                $(this).css('background', 'orange');
+            }
+        });
+    });
+</script>
+<body>
+    <h1 class="select">Header-0</h1>
+    <h1>Header-1</h1>
+    <h1 class="select">Header-2</h1>
+</body>
