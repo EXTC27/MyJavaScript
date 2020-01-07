@@ -1,0 +1,15 @@
+<!-- [15-03] -->
+<!-- addClass() 메서드의 콜백 함수 -->
+<script src="jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('h1').addClass(function(index){
+            return 'class' + index;
+        });
+    });
+</script>
+<body>
+    <h1>Header-0</h1>
+    <h1>Header-1</h1>
+    <h1>Header-2</h1>
+</body>
