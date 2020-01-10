@@ -1,0 +1,16 @@
+<!-- [15-10] -->
+<!-- attr() - Setter 2 -->
+<script src="jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('img').attr('width', function(index){
+            return (index + 1) * 100;
+        });
+    });
+</script>
+
+<body>
+    <img src="mountain1.jpg"/>
+    <img src="mountain2.jpg"/>
+    <img src="mountain3.jpg"/>
+</body>
